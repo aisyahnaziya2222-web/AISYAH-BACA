@@ -105,6 +105,15 @@
             box-shadow: 0 2px 0px 0px #9D174D;
         }
 
+        /* Animasi Transisi Halus */
+        .fade-enter {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         /* Scrollbar kustom ceria */
         ::-webkit-scrollbar {
             width: 10px;
@@ -157,13 +166,13 @@
 
     <canvas id="starCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none z-50"></canvas>
 
-    <!-- Wadah Utama Aplikasi (Maksimal Lebar Seperti Tablet/HP agar Pas) -->
+    <!-- Wadah Utama Aplikasi -->
     <main class="w-full max-w-lg bg-white dark:bg-slate-900 rounded-[2.5rem] border-[6px] border-amber-400 dark:border-indigo-500 p-4 sm:p-6 shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[85vh] transition-colors duration-400">
         
         <!-- HEADER UTAMA (Skor, Level, Musik, Bahasa, & Tema) -->
         <header class="flex justify-between items-center mb-4 z-10 gap-2">
             <div class="flex items-center space-x-1.5">
-                <button onclick="goToMenu()" class="w-10 h-10 flex items-center justify-center bg-pink-100 dark:bg-pink-900/30 hover:bg-pink-200 dark:hover:bg-pink-900/50 border-2 border-pink-400 text-pink-600 dark:text-pink-300 rounded-full transition-transform active:scale-90 pop-shadow-sm" id="btnBackHome" title="Kembali ke Menu Utama">
+                <button onclick="goToMenu()" class="w-10 h-10 flex items-center justify-center bg-pink-100 dark:bg-pink-900/30 hover:bg-pink-200 dark:hover:bg-pink-900/50 border-2 border-pink-400 text-pink-600 dark:text-pink-300 rounded-full transition-transform active:scale-90 pop-shadow-sm invisible" id="btnBackHome" title="Kembali ke Menu Utama">
                     <i class="fa-solid fa-home text-lg"></i>
                 </button>
                 <!-- Tombol Ganti Bahasa -->
@@ -189,26 +198,46 @@
             </div>
         </header>
 
-        <!-- ================= MAIN MENU SCREEN ================= -->
-        <section id="screenMenu" class="flex flex-col items-center justify-center text-center space-y-6 flex-grow py-4">
+        <!-- ================= PASSWORD SCREEN ================= -->
+        <section id="screenPassword" class="flex flex-col items-center justify-center text-center space-y-6 flex-grow py-4 fade-enter">
             <div class="relative">
-                <!-- Mascot lucu Aisyahku -->
-                <div class="animate-float mb-2 text-7xl select-none filter drop-shadow">☀️</div>
-                <h1 id="mainTitleText" class="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-amber-500 to-emerald-500 tracking-wide filter drop-shadow">
+                <div class="animate-float mb-2 text-7xl select-none filter drop-shadow">🔑</div>
+                <h1 id="passTitleText" class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-pink-500 to-indigo-500 tracking-wide filter drop-shadow">
+                    🔑 Pintu Rahasia Aisyah
+                </h1>
+            </div>
+
+            <div class="w-full max-w-xs bg-amber-50 dark:bg-slate-800/80 p-5 rounded-3xl border-3 border-dashed border-amber-300 dark:border-indigo-800 space-y-4">
+                <label id="passwordLabel" for="appPassword" class="block text-amber-800 dark:text-amber-300 font-extrabold text-sm">🔑 Masukkan kata sandi untuk masuk:</label>
+                <input type="password" id="appPassword" placeholder="Ketik sandi di sini..." class="w-full px-4 py-2.5 text-center text-lg font-bold rounded-2xl border-3 border-amber-400 dark:border-indigo-400 focus:outline-none focus:ring-4 focus:ring-amber-200 dark:focus:ring-indigo-800 text-slate-700 dark:text-slate-100 bg-white dark:bg-slate-900 shadow-inner" maxlength="20">
+                <p id="passwordErrorMsg" class="hidden text-xs font-black text-rose-500 animate-pulse bg-rose-50 dark:bg-rose-950/40 p-2 rounded-xl border border-rose-200 dark:border-rose-900"></p>
+            </div>
+
+            <button onclick="checkAppPassword()" id="btnSubmitPass" class="btn-cartoon-green py-3 w-full max-w-xs text-lg font-black rounded-3xl hover-wiggle transition-all flex items-center justify-center gap-2">
+                BUKA PINTU 🔓
+            </button>
+        </section>
+
+        <!-- ================= MAIN MENU SCREEN ================= -->
+        <section id="screenMenu" class="hidden flex-col items-center justify-center text-center space-y-6 flex-grow py-4">
+            <div class="relative">
+                <div class="animate-float mb-2 text-7xl select-none filter drop-shadow">🎒</div>
+                <h1 id="mainTitleText" class="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-teal-500 to-emerald-500 tracking-wide filter drop-shadow">
                     AISYAHKU
                 </h1>
-                <p id="subTitleText" class="text-slate-600 dark:text-slate-300 font-bold text-xs sm:text-sm mt-1 uppercase tracking-wider">UNTUK ANAK TK & PAUD</p>
+                <p id="subTitleText" class="text-xs font-black text-amber-500 tracking-wider uppercase mt-1">
+                    UNTUK ANAK TK & PAUD
+                </p>
             </div>
 
-            <!-- Box Input Nama Bermain -->
-            <div class="w-full max-w-xs bg-amber-50 dark:bg-slate-800/80 p-4 rounded-3xl border-3 border-dashed border-amber-300 dark:border-indigo-800">
-                <label id="playerNameLabel" for="playerName" class="block text-amber-800 dark:text-amber-300 font-extrabold text-sm mb-2">🎈 Siapa Nama Anak Pintar?</label>
-                <input type="text" id="playerName" placeholder="Tulis namamu disini..." class="w-full px-4 py-2 text-center text-lg font-bold rounded-2xl border-3 border-amber-400 dark:border-indigo-400 focus:outline-none focus:ring-4 focus:ring-amber-200 dark:focus:ring-indigo-800 text-slate-700 dark:text-slate-100 bg-white dark:bg-slate-900 shadow-inner" maxlength="15">
+            <!-- Masukan Nama Pemain -->
+            <div class="w-full max-w-xs bg-indigo-50 dark:bg-slate-800/80 p-5 rounded-3xl border-3 border-dashed border-indigo-300 dark:border-indigo-800 space-y-3">
+                <label id="playerNameLabel" for="playerName" class="block text-indigo-800 dark:text-indigo-300 font-extrabold text-sm">🎈 Siapa Nama Anak Pintar?</label>
+                <input type="text" id="playerName" placeholder="Tulis namamu disini..." class="w-full px-4 py-2.5 text-center text-lg font-bold rounded-2xl border-3 border-indigo-400 dark:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 text-slate-700 dark:text-slate-100 bg-white dark:bg-slate-900 shadow-inner" maxlength="15" value="Aisyah">
             </div>
 
-            <!-- Tombol Navigasi Menu -->
             <div class="flex flex-col space-y-3 w-full max-w-xs">
-                <button onclick="startPlay()" id="btnStartText" class="btn-cartoon-green py-3 text-xl font-black rounded-3xl hover-wiggle transition-all flex items-center justify-center gap-2">
+                <button onclick="startPlay()" id="btnStartText" class="btn-cartoon-green py-3.5 text-xl font-black rounded-3xl hover-wiggle transition-all flex items-center justify-center gap-2">
                     <i class="fa-solid fa-play text-2xl"></i> MULAI BERMAIN!
                 </button>
                 <button onclick="showLevels()" id="btnSelectLvlText" class="btn-cartoon-blue py-2.5 text-lg font-extrabold rounded-3xl transition-all flex items-center justify-center gap-2">
@@ -462,7 +491,7 @@
             </div>
         </section>
 
-        <!-- ================= CUSTOM DIALOG CONFIRMATION (No default alert/confirm) ================= -->
+        <!-- ================= CUSTOM DIALOG CONFIRMATION ================= -->
         <div id="customConfirmModal" class="hidden absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-4 rounded-[2.5rem] backdrop-blur-sm">
             <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-xs w-full text-center border-4 border-amber-400 dark:border-indigo-500 pop-shadow">
                 <div class="text-4xl mb-2">❓</div>
@@ -478,11 +507,12 @@
     </main>
 
     <script>
+        /* ================= STREAMING_CHUNK: Menyiapkan State Utama Permainan... ================= */
         /* ================= STATE UTAMA APLIKASI ================= */
         const state = {
             playerName: "Aisyah",
-            lang: "id", // default: Indonesian, options: "id", "en"
-            theme: "light", // default: Light Theme, options: "light", "dark"
+            lang: "id", // default: Indonesian
+            theme: "light", // default: Light Theme
             currentLevel: 1,
             currentQuestionIdx: 0,
             score: 0,
@@ -504,6 +534,11 @@
         /* ================= KAMUS BAHASA (MULTILANGUAGE i18n) ================= */
         const i18n = {
             id: {
+                passwordTitle: "🔑 Pintu Rahasia Aisyah",
+                passwordLabel: "Masukkan kata sandi untuk masuk:",
+                passwordPlaceholder: "Ketik sandi di sini...",
+                passwordBtn: "BUKA PINTU 🔓",
+                passwordError: "Ups! Sandi salah. Tanya Bunda atau Ayah ya! 😉",
                 title: "AISYAHKU",
                 subtitle: "UNTUK ANAK TK & PAUD",
                 inputLabel: "🎈 Siapa Nama Anak Pintar?",
@@ -561,6 +596,11 @@
                 hitungLabel: "Hitung Cepat"
             },
             en: {
+                passwordTitle: "🔑 Aisyah's Secret Gate",
+                passwordLabel: "Enter the password to enter:",
+                passwordPlaceholder: "Type password here...",
+                passwordBtn: "OPEN GATE 🔓",
+                passwordError: "Oops! Wrong password. Ask Mom or Dad! 😉",
                 title: "AISYAH'S ACADEMY",
                 subtitle: "FOR KINDERGARTEN & PRESCHOOL",
                 inputLabel: "🎈 What is your name, little star?",
@@ -619,7 +659,6 @@
             }
         };
 
-        /* ================= STREAMING_CHUNK: Setting Up Questions Database... ================= */
         /* ================= BANK PERTANYAAN (ID & EN - TOTAL 80 SOAL) ================= */
         const DATABASE_PERTANYAAN = {
             id: {
@@ -724,7 +763,7 @@
             }
         };
 
-        /* ================= STREAMING_CHUNK: Initializing Canvas Star Animation... ================= */
+        /* ================= STREAMING_CHUNK: Mengaktifkan Canvas Star Animation... ================= */
         /* ================= KANVAS PARTIKEL BINTANG (HTML5 Canvas) ================= */
         const canvas = document.getElementById('starCanvas');
         const ctx = canvas.getContext('2d');
@@ -799,7 +838,7 @@
         }
         updateAndDrawParticles();
 
-        /* ================= STREAMING_CHUNK: Coding Audio Procedural Synthesizers... ================= */
+        /* ================= STREAMING_CHUNK: Menyusun Efek Suara Procedural... ================= */
         /* ================= WEB AUDIO API (SINTESIS MUSIK & SUARA SEAMLESS) ================= */
         function initAudioContext() {
             if (!state.audioCtx) {
@@ -899,60 +938,82 @@
             }
         }
 
-        /* ================= STREAMING_CHUNK: Designing Language & Theme Switchers... ================= */
+        /* ================= STREAMING_CHUNK: Menyusun Safe-Guard i18n & Tema... ================= */
+        /* ================= SAFE SETTER HELPER FUNCTIONS (Anti Null Crash Guard) ================= */
+        function safeSetText(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = text;
+        }
+
+        function safeSetHTML(id, html) {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = html;
+        }
+
+        function safeSetPlaceholder(id, placeholder) {
+            const el = document.getElementById(id);
+            if (el) el.placeholder = placeholder;
+        }
+
         /* ================= SISTEM TRANSLASI (i18n) & PREFERENSI TEMA ================= */
         function applyLanguage() {
             const lang = state.lang;
             const t = i18n[lang];
 
-            // Update UI teks utama secara masif
-            document.getElementById('mainTitleText').innerText = t.title;
-            document.getElementById('subTitleText').innerText = t.subtitle;
-            document.getElementById('playerNameLabel').innerText = t.inputLabel;
-            document.getElementById('playerName').placeholder = t.inputPlaceholder;
-            document.getElementById('btnStartText').innerHTML = `<i class="fa-solid fa-play text-2xl"></i> ${t.btnStart}`;
-            document.getElementById('btnSelectLvlText').innerHTML = `<i class="fa-solid fa-trophy text-amber-200"></i> ${t.btnLevel}`;
-            document.getElementById('btnViewScoresText').innerHTML = `<i class="fa-solid fa-star text-white"></i> ${t.btnScores}`;
+            // Update UI teks Kata Sandi dengan Aman
+            safeSetText('passTitleText', t.passwordTitle);
+            safeSetText('passwordLabel', t.passwordLabel);
+            safeSetPlaceholder('appPassword', t.passwordPlaceholder);
+            safeSetHTML('btnSubmitPass', t.passwordBtn);
 
-            document.getElementById('screenLevelsTitle').innerText = t.selectLevelTitle;
-            document.getElementById('lvl1TextTitle').innerText = t.lvl1Title;
-            document.getElementById('lvl1TextDesc').innerText = t.lvl1Desc;
-            document.getElementById('lvl2TextTitle').innerText = t.lvl2Title;
-            document.getElementById('lvl2TextDesc').innerText = t.lvl2Desc;
-            document.getElementById('lvl3TextTitle').innerText = t.lvl3Title;
-            document.getElementById('lvl3TextDesc').innerText = t.lvl3Desc;
-            document.getElementById('lvl4TextTitle').innerText = t.lvl4Title;
-            document.getElementById('lvl4TextDesc').innerText = t.lvl4Desc;
-            document.getElementById('btnBackMenuFromLvl').innerText = t.backMenu;
+            // Update UI teks utama secara masif dengan Aman
+            safeSetText('mainTitleText', t.title);
+            safeSetText('subTitleText', t.subtitle);
+            safeSetText('playerNameLabel', t.inputLabel);
+            safeSetPlaceholder('playerName', t.inputPlaceholder);
+            safeSetHTML('btnStartText', `<i class="fa-solid fa-play text-2xl"></i> ${t.btnStart}`);
+            safeSetHTML('btnSelectLvlText', `<i class="fa-solid fa-trophy text-amber-200"></i> ${t.btnLevel}`);
+            safeSetHTML('btnViewScoresText', `<i class="fa-solid fa-star text-white"></i> ${t.btnScores}`);
 
-            document.getElementById('gameLevelDisplayLabel').innerText = t.score; // "LEVEL"
-            document.getElementById('gameScoreDisplayLabel').innerText = t.score;
-            document.getElementById('questionNumDisplayLabel').innerText = t.question;
-            document.getElementById('progressText').innerText = t.progress;
+            safeSetText('screenLevelsTitle', t.selectLevelTitle);
+            safeSetText('lvl1TextTitle', t.lvl1Title);
+            safeSetText('lvl1TextDesc', t.lvl1Desc);
+            safeSetText('lvl2TextTitle', t.lvl2Title);
+            safeSetText('lvl2TextDesc', t.lvl2Desc);
+            safeSetText('lvl3TextTitle', t.lvl3Title);
+            safeSetText('lvl3TextDesc', t.lvl3Desc);
+            safeSetText('lvl4TextTitle', t.lvl4Title);
+            safeSetText('lvl4TextDesc', t.lvl4Desc);
+            safeSetText('btnBackMenuFromLvl', t.backMenu);
 
-            document.getElementById('lvlCompleteHore').innerText = t.finishTitle;
-            document.getElementById('gradeValueDisplayLabel').innerText = t.yourGrade;
-            document.getElementById('btnActionNext').innerText = t.btnNextLvl;
-            document.getElementById('btnActionReplay').innerText = t.btnReplay;
-            document.getElementById('btnActionHome').innerText = t.backMenu;
-            document.getElementById('btnGetCert').innerHTML = t.btnCert;
+            safeSetText('gameLevelDisplayLabel', t.score);
+            safeSetText('gameScoreDisplayLabel', t.score);
+            safeSetText('questionNumDisplayLabel', t.question);
+            safeSetText('progressText', t.progress);
 
-            document.getElementById('scoresScrTitle').innerText = t.scoresTitle;
-            document.getElementById('btnResetScoreLabel').innerText = t.btnReset;
-            document.getElementById('btnScoresToMenu').innerText = t.backMenu;
+            safeSetText('lvlCompleteHore', t.finishTitle);
+            safeSetText('gradeValueDisplayLabel', t.yourGrade);
+            safeSetText('btnActionNext', t.btnNextLvl);
+            safeSetText('btnActionReplay', t.btnReplay);
+            safeSetText('btnActionHome', t.backMenu);
+            safeSetHTML('btnGetCert', t.btnCert);
 
-            document.getElementById('certSubHeader').innerText = t.certTitle;
-            document.getElementById('certMainHeader').innerText = t.certSchool;
-            document.getElementById('certPresentTo').innerText = t.certGivenTo;
-            document.getElementById('certDescription').innerHTML = t.certDesc;
-            document.getElementById('certPerfectTextLabel').innerText = t.certPerfect;
-            document.getElementById('certDateTitle').innerText = t.certDateLabel;
-            document.getElementById('certDirTitle').innerText = t.certDirector;
-            document.getElementById('certDirName').innerText = t.certDirectorName;
-            document.getElementById('btnPrintSaveLabel').innerHTML = `<i class="fa-solid fa-print"></i> ${t.btnSavePdf}`;
-            document.getElementById('btnCertExitLabel').innerText = t.btnExit;
+            safeSetText('scoresScrTitle', t.scoresTitle);
+            safeSetText('btnResetScoreLabel', t.btnReset);
+            safeSetText('btnScoresToMenu', t.backMenu);
 
-            document.getElementById('langToggleBtn').innerText = lang.toUpperCase();
+            safeSetText('certSubHeader', t.certTitle);
+            safeSetText('certMainHeader', t.certSchool);
+            safeSetText('certPresentTo', t.certGivenTo);
+            safeSetHTML('certDescription', t.certDesc);
+            safeSetText('certPerfectTextLabel', t.certPerfect);
+            safeSetText('certDateTitle', t.certDateLabel);
+            safeSetText('certDirTitle', t.certDirector);
+            safeSetText('certDirName', t.certDirectorName);
+            safeSetHTML('btnPrintSaveLabel', `<i class="fa-solid fa-print"></i> ${t.btnSavePdf}`);
+            safeSetText('btnCertExitLabel', t.btnExit);
+
+            safeSetText('langToggleBtn', lang.toUpperCase());
         }
 
         function toggleLanguage() {
@@ -1029,7 +1090,7 @@
             };
         }
 
-        /* ================= STREAMING_CHUNK: Managing LocalStorage and Game Logic... ================= */
+        /* ================= STREAMING_CHUNK: Merawat Logika LocalStorage... ================= */
         /* ================= MANAJEMEN PENYIMPANAN DATA (LOCALSTORAGE) ================= */
         function loadSavedScores() {
             const saved = localStorage.getItem("aisyahku_highscores");
@@ -1043,7 +1104,8 @@
             const savedName = localStorage.getItem("aisyahku_playername");
             if (savedName) {
                 state.playerName = savedName;
-                document.getElementById('playerName').value = savedName;
+                const playerInput = document.getElementById('playerName');
+                if (playerInput) playerInput.value = savedName;
             }
         }
 
@@ -1064,6 +1126,7 @@
 
         /* ================= NAVIGASI ANTAR LAYAR ================= */
         function hideAllScreens() {
+            document.getElementById('screenPassword').classList.add('hidden');
             document.getElementById('screenMenu').classList.add('hidden');
             document.getElementById('screenLevels').classList.add('hidden');
             document.getElementById('screenGame').classList.add('hidden');
@@ -1081,7 +1144,26 @@
             hideAllScreens();
             document.getElementById('screenMenu').classList.remove('hidden');
             document.getElementById('playerIndicator').classList.add('hidden');
+            document.getElementById('btnBackHome').classList.remove('invisible');
             initAudioContext();
+        }
+
+        function checkAppPassword() {
+            const passInput = document.getElementById('appPassword').value.trim();
+            const errorMsg = document.getElementById('passwordErrorMsg');
+            const t = i18n[state.lang];
+
+            if (passInput === "aisyahpintar") {
+                errorMsg.classList.add('hidden');
+                triggerStarExplosion();
+                playCorrectSound();
+                goToMenu();
+            } else {
+                errorMsg.innerText = t.passwordError;
+                errorMsg.classList.remove('hidden');
+                playWrongSound();
+                document.getElementById('appPassword').value = "";
+            }
         }
 
         function showLevels() {
@@ -1116,6 +1198,7 @@
 
         function renderScoreboard() {
             const list = document.getElementById('scoresList');
+            if (!list) return;
             list.innerHTML = "";
             const t = i18n[state.lang];
 
@@ -1146,12 +1229,13 @@
             });
         }
 
-        /* ================= STREAMING_CHUNK: Initiating Core Gameplay Mechanics... ================= */
+        /* ================= STREAMING_CHUNK: Menyusun Gameplay Core Mechanics... ================= */
         /* ================= STRATEGI MULAI PERMAINAN ================= */
         function startPlay() {
             initAudioContext();
             
-            const nameInp = document.getElementById('playerName').value.trim();
+            const playerInput = document.getElementById('playerName');
+            const nameInp = playerInput ? playerInput.value.trim() : "";
             state.playerName = nameInp ? nameInp : "Aisyah";
             saveScores();
 
@@ -1195,7 +1279,7 @@
             loadQuestion();
         }
 
-        /* ================= STREAMING_CHUNK: Loading Individual Question UI... ================= */
+        /* ================= STREAMING_CHUNK: Menyajikan Navigasi Pertanyaan... ================= */
         /* ================= LOAD DAN TAMPILKAN SOAL ================= */
         function loadQuestion() {
             if (state.currentQuestionIdx >= 10) {
@@ -1405,12 +1489,23 @@
             window.print();
         }
 
+        /* ================= STREAMING_CHUNK: Memulai Eksekusi On-Load... ================= */
         /* ================= RUNNING ON LAUNCH ================= */
         window.onload = function() {
             loadSavedScores();
             loadSavedThemeAndLang();
-            
-            document.getElementById('playerName').value = state.playerName;
+
+            // Mulai di layar Kata Sandi & Sembunyikan Tombol Home Sementara
+            hideAllScreens();
+            document.getElementById('screenPassword').classList.remove('hidden');
+            document.getElementById('btnBackHome').classList.add('invisible');
+
+            // Tambahkan pendengar tombol enter di input kata sandi
+            document.getElementById('appPassword').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    checkAppPassword();
+                }
+            });
 
             document.body.addEventListener('click', function initBGMOnInteraction() {
                 initAudioContext();
